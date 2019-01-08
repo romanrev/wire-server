@@ -373,10 +373,11 @@ targetClientPush gu ca _ _ = do
     sendPush gu (push uid cid1)
     liftIO $ do
         e1 <- waitForMessage c1
-        e2 <- waitForMessage c2
+        e2 <- waitForMessage c2  -- TODO: if this is replaced by 'pure Nothing', this test passes.
         assertBool "No push message received" (isJust e1)
         assertBool "Unexpected push message received" (isNothing e2)
     -- Push only to the second client
+    threadDelay 1000000  -- TODO: alternatively, this line also helps.  why?!
     sendPush gu (push uid cid2)
     liftIO $ do
         e1 <- waitForMessage c1
